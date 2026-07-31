@@ -259,21 +259,6 @@ export function Navbar() {
           </button>
         </div>
 
-        <nav
-          aria-label="Mobile"
-          className="relative flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto px-6 pb-10 pt-4"
-        >
-          {navLinks.slice(0, 3).map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className="rounded-2xl px-4 py-3.5 font-display text-2xl font-medium text-white/90 transition-colors hover:bg-white/5 hover:text-gold"
-            >
-              {link.label}
-            </a>
-          ))}
-
           <div>
             <button
               type="button"
