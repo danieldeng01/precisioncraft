@@ -8,8 +8,9 @@ The frontend is complete. The backend is now prepared for Vercel with PostgreSQL
   - `inquiries` — quote/contact form submissions
   - `newsletter_subscribers` — newsletter emails
 - `drizzle.config.ts` reads `DATABASE_URL` or `POSTGRES_URL` from the environment.
-- `drizzle/0000_left_texas_twister.sql` is the first generated SQL migration.
-- `src/db/index.ts` uses a Vercel-friendly `pg` connection pool and SSL for hosted databases.
+- `drizzle/0000_left_texas_twister.sql` and `drizzle/0001_friendly_white_tiger.sql` are the generated SQL migrations.
+- `src/db/index.ts` uses a lazy, Vercel-friendly `pg` connection pool and SSL for hosted databases.
+- Lazy DB initialization prevents `next build` from failing during Vercel preview builds if the database env var is not present yet.
 - API routes that use PostgreSQL are explicitly set to `runtime = "nodejs"` for Vercel.
 - `.env.example` lists every required and optional environment variable.
 

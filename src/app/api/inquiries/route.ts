@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { inquiries } from "@/db/schema";
 import { quoteSchema, type QuoteFormValues } from "@/lib/validation";
 import { notifyNewInquiry, sendInquiryAutoReply } from "@/lib/email";
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
   const inquiry = parsed.data;
 
   try {
-    await db.insert(inquiries).values({ type, ...inquiry });
+    await getDb().insert(inquiries).values({ type, ...inquiry });
   } catch (error) {
     console.error("Failed to store inquiry:", error);
     return NextResponse.json(

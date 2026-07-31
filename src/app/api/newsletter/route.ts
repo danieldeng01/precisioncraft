@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { newsletterSubscribers } from "@/db/schema";
 import { newsletterSchema } from "@/lib/validation";
 import { sendNewsletterWelcome } from "@/lib/email";
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   const email = parsed.data.email.toLowerCase();
 
   try {
-    await db
+    await getDb()
       .insert(newsletterSubscribers)
       .values({ email })
       .onConflictDoNothing();
