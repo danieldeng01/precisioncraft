@@ -128,10 +128,9 @@ export function Hero() {
             variants={rise}
             className="mt-7 max-w-xl text-base leading-relaxed text-white/75 sm:text-lg"
           >
-            Precision Craft Interiors Kenya designs, builds and installs
-            bespoke kitchens, wardrobes and commercial interiors for
-            discerning homeowners, developers and businesses across Uasin
-            Gishu and beyond.
+            We design, manufacture and install premium kitchens, wardrobes,
+            TV units, vanities, office furniture and complete interior solutions for 
+            homeowners, developers, architects, contractors and businesses across Kenya.
           </motion.p>
 
           <motion.div
