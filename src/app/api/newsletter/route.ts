@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { newsletterSubscribers } from "@/db/schema";
+import { newsletterSchema } from "@/lib/validation";
+import { sendNewsletterWelcome } from "@/lib/email";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -15,21 +18,25 @@ export async function POST(request: Request) {
     );
   }
 
-  const email = String((body as Record<string, unknown>).email ?? "")
-    .trim()
-    .toLowerCase();
-
-  if (!EMAIL_RE.test(email)) {
+  const parsed = newsletterSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json(
-      { ok: false, error: "Please enter a valid email address." },
+      {
+        ok: false,
+        error:
+          parsed.error.issues[0]?.message ??
+          "Please enter a valid email address.",
+      },
       { status: 422 },
     );
   }
 
+  const email = parsed.data.email.toLowerCase();
+
   try {
     await db
       .insert(newsletterSubscribers)
-      .values({ email: email.slice(0, 160) })
+      .values({ email })
       .onConflictDoNothing();
   } catch (error) {
     console.error("Failed to store newsletter subscription:", error);
@@ -37,6 +44,13 @@ export async function POST(request: Request) {
       { ok: false, error: "Something went wrong. Please try again shortly." },
       { status: 500 },
     );
+  }
+
+  // Best-effort welcome email (Resend).
+  try {
+    await sendNewsletterWelcome(email);
+  } catch (error) {
+    console.error("[email] Newsletter welcome failed:", error);
   }
 
   return NextResponse.json({ ok: true });

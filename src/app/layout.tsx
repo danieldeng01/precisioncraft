@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { site } from "@/lib/site";
+import { services, site } from "@/lib/site";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -121,6 +122,19 @@ const localBusinessJsonLd = {
     "Kakamega",
     "Nakuru",
   ],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Interior Solutions",
+    itemListElement: services.map((service) => ({
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: service.title,
+        description: service.copy,
+        areaServed: "Uasin Gishu County, Kenya",
+      },
+    })),
+  },
   sameAs: site.socials.map((s) => s.href),
 };
 
@@ -156,6 +170,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <main id="main">{children}</main>
         <Footer />
         <WhatsAppFloat />
+        <GoogleAnalytics />
       </body>
     </html>
   );

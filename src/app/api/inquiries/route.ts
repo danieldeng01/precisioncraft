@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { inquiries } from "@/db/schema";
+import { quoteSchema, type QuoteFormValues } from "@/lib/validation";
+import { notifyNewInquiry, sendInquiryAutoReply } from "@/lib/email";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PHONE_RE = /^[+()\d][\d\s().-]{6,19}$/;
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+type FieldErrors = Partial<Record<keyof QuoteFormValues, string>>;
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -16,34 +20,24 @@ export async function POST(request: Request) {
     );
   }
 
-  const data = body as Record<string, unknown>;
-  const name = String(data.name ?? "").trim();
-  const email = String(data.email ?? "").trim();
-  const phone = String(data.phone ?? "").trim();
-  const service = String(data.service ?? "general").trim().slice(0, 80);
-  const message = String(data.message ?? "").trim();
-  const type = data.type === "contact" ? "contact" : "quote";
+  const payload = body as Record<string, unknown>;
+  const type = payload.type === "contact" ? "contact" : "quote";
 
-  const errors: Record<string, string> = {};
-  if (name.length < 2) errors.name = "Please tell us your name.";
-  if (!EMAIL_RE.test(email)) errors.email = "Please enter a valid email address.";
-  if (!PHONE_RE.test(phone)) errors.phone = "Please enter a valid phone number.";
-  if (message.length < 10)
-    errors.message = "Please describe your project in at least 10 characters.";
-
-  if (Object.keys(errors).length > 0) {
+  const parsed = quoteSchema.safeParse(payload);
+  if (!parsed.success) {
+    const errors: FieldErrors = {};
+    for (const [field, messages] of Object.entries(
+      parsed.error.flatten().fieldErrors,
+    )) {
+      if (messages?.[0]) errors[field as keyof QuoteFormValues] = messages[0];
+    }
     return NextResponse.json({ ok: false, errors }, { status: 422 });
   }
 
+  const inquiry = parsed.data;
+
   try {
-    await db.insert(inquiries).values({
-      type,
-      name: name.slice(0, 120),
-      email: email.slice(0, 160),
-      phone: phone.slice(0, 32),
-      service,
-      message: message.slice(0, 4000),
-    });
+    await db.insert(inquiries).values({ type, ...inquiry });
   } catch (error) {
     console.error("Failed to store inquiry:", error);
     return NextResponse.json(
@@ -54,6 +48,17 @@ export async function POST(request: Request) {
       },
       { status: 500 },
     );
+  }
+
+  // Best-effort email notifications (Resend) — never blocks the response.
+  const [notifyResult, replyResult] = await Promise.allSettled([
+    notifyNewInquiry({ ...inquiry, type }),
+    sendInquiryAutoReply(inquiry),
+  ]);
+  for (const result of [notifyResult, replyResult]) {
+    if (result.status === "rejected") {
+      console.error("[email] Inquiry notification failed:", result.reason);
+    }
   }
 
   return NextResponse.json({ ok: true });

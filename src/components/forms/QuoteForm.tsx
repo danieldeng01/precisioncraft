@@ -1,75 +1,82 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, Loader2, Send } from "lucide-react";
 import { services, site } from "@/lib/site";
-
-type FieldErrors = Partial<
-  Record<"name" | "email" | "phone" | "message", string>
->;
+import { quoteSchema, type QuoteFormValues } from "@/lib/validation";
+import { cn } from "@/lib/utils";
 
 const inputClass =
-  "w-full rounded-2xl border border-line bg-mist/60 px-4 py-3.5 text-sm text-ink placeholder:text-ink-soft/60 transition-all duration-300 focus:border-primary focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10";
+  "w-full rounded-2xl border bg-mist/60 px-4 py-3.5 text-sm text-ink placeholder:text-ink-soft/60 transition-all duration-300 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10";
 
 const labelClass =
   "mb-2 block text-xs font-semibold uppercase tracking-wider text-ink";
 
+type FieldName = keyof QuoteFormValues;
+
 export function QuoteForm() {
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
-  const [errors, setErrors] = useState<FieldErrors>({});
   const [serverError, setServerError] = useState("");
+  const [sent, setSent] = useState(false);
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const formData = new FormData(form);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<QuoteFormValues>({
+    resolver: zodResolver(quoteSchema),
+    defaultValues: { service: services[0].title },
+    mode: "onTouched",
+  });
 
-    setStatus("loading");
-    setErrors({});
+  async function onSubmit(values: QuoteFormValues) {
     setServerError("");
 
     try {
       const res = await fetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "quote",
-          name: formData.get("name"),
-          email: formData.get("email"),
-          phone: formData.get("phone"),
-          service: formData.get("service"),
-          message: formData.get("message"),
-        }),
+        body: JSON.stringify({ type: "quote", ...values }),
       });
-
       const data = (await res.json()) as {
         ok: boolean;
-        errors?: FieldErrors;
+        errors?: Partial<Record<FieldName, string>>;
         error?: string;
       };
 
       if (res.status === 422 && data.errors) {
-        setErrors(data.errors);
-        setStatus("error");
+        for (const [field, message] of Object.entries(data.errors)) {
+          if (message) {
+            setError(field as FieldName, { type: "server", message });
+          }
+        }
         return;
       }
       if (!res.ok || !data.ok) {
         setServerError(data.error ?? "Something went wrong. Please try again.");
-        setStatus("error");
         return;
       }
 
-      setStatus("success");
-      form.reset();
+      setSent(true);
+      reset();
     } catch {
       setServerError("Network error — please check your connection and retry.");
-      setStatus("error");
     }
   }
 
-  if (status === "success") {
+  function fieldClass(hasError: boolean) {
+    return cn(
+      inputClass,
+      hasError
+        ? "border-red-400 focus:border-red-500 focus:ring-red-500/10"
+        : "border-line focus:border-primary",
+    );
+  }
+
+  if (sent) {
     return (
       <div className="flex h-full min-h-[28rem] flex-col items-center justify-center rounded-3xl border border-gold/40 bg-gold-50 p-10 text-center">
         <span className="flex h-16 w-16 items-center justify-center rounded-full bg-gold text-primary-900 shadow-gold">
@@ -91,7 +98,7 @@ export function QuoteForm() {
         </p>
         <button
           type="button"
-          onClick={() => setStatus("idle")}
+          onClick={() => setSent(false)}
           className="mt-8 text-sm font-semibold text-primary underline decoration-gold decoration-2 underline-offset-4 transition-colors hover:text-gold-600"
         >
           Send another request
@@ -102,7 +109,7 @@ export function QuoteForm() {
 
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       noValidate
       className="rounded-3xl border border-line bg-white p-7 shadow-card sm:p-9"
       aria-label="Request a free quote"
@@ -122,18 +129,17 @@ export function QuoteForm() {
           </label>
           <input
             id="quote-name"
-            name="name"
             type="text"
             autoComplete="name"
-            required
             placeholder="e.g. Grace Wanjiku"
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? "quote-name-error" : undefined}
-            className={inputClass}
+            className={fieldClass(Boolean(errors.name))}
+            {...register("name")}
           />
           {errors.name && (
             <p id="quote-name-error" className="mt-1.5 text-xs font-medium text-red-600">
-              {errors.name}
+              {errors.name.message}
             </p>
           )}
         </div>
@@ -144,18 +150,17 @@ export function QuoteForm() {
           </label>
           <input
             id="quote-phone"
-            name="phone"
             type="tel"
             autoComplete="tel"
-            required
-            placeholder="e.g. 0700 000 000"
+            placeholder="e.g. 0743 717 230"
             aria-invalid={Boolean(errors.phone)}
             aria-describedby={errors.phone ? "quote-phone-error" : undefined}
-            className={inputClass}
+            className={fieldClass(Boolean(errors.phone))}
+            {...register("phone")}
           />
           {errors.phone && (
             <p id="quote-phone-error" className="mt-1.5 text-xs font-medium text-red-600">
-              {errors.phone}
+              {errors.phone.message}
             </p>
           )}
         </div>
@@ -166,18 +171,17 @@ export function QuoteForm() {
           </label>
           <input
             id="quote-email"
-            name="email"
             type="email"
             autoComplete="email"
-            required
             placeholder="you@example.co.ke"
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "quote-email-error" : undefined}
-            className={inputClass}
+            className={fieldClass(Boolean(errors.email))}
+            {...register("email")}
           />
           {errors.email && (
             <p id="quote-email-error" className="mt-1.5 text-xs font-medium text-red-600">
-              {errors.email}
+              {errors.email.message}
             </p>
           )}
         </div>
@@ -186,7 +190,11 @@ export function QuoteForm() {
           <label htmlFor="quote-service" className={labelClass}>
             I&apos;m interested in
           </label>
-          <select id="quote-service" name="service" className={inputClass} defaultValue={services[0].title}>
+          <select
+            id="quote-service"
+            className={fieldClass(Boolean(errors.service))}
+            {...register("service")}
+          >
             {services.map((service) => (
               <option key={service.slug} value={service.title}>
                 {service.title}
@@ -203,17 +211,16 @@ export function QuoteForm() {
           </label>
           <textarea
             id="quote-message"
-            name="message"
-            required
             rows={4}
             placeholder="e.g. We're finishing a 4-bedroom home in Elgon View and need a kitchen, three wardrobes and a TV wall…"
             aria-invalid={Boolean(errors.message)}
             aria-describedby={errors.message ? "quote-message-error" : undefined}
-            className={`${inputClass} resize-none`}
+            className={cn(fieldClass(Boolean(errors.message)), "resize-none")}
+            {...register("message")}
           />
           {errors.message && (
             <p id="quote-message-error" className="mt-1.5 text-xs font-medium text-red-600">
-              {errors.message}
+              {errors.message.message}
             </p>
           )}
         </div>
@@ -227,10 +234,10 @@ export function QuoteForm() {
 
       <button
         type="submit"
-        disabled={status === "loading"}
-        className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-gold px-6 py-4 font-display text-sm font-semibold text-primary-900 shadow-gold transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold-400 disabled:opacity-60"
+        disabled={isSubmitting}
+        className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-gold px-6 py-4 font-display text-sm font-semibold text-primary-900 shadow-gold transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold-400 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {status === "loading" ? (
+        {isSubmitting ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
             Sending your request…

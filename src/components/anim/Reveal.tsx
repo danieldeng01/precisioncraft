@@ -1,19 +1,16 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  type CSSProperties,
-  type ElementType,
-  type ReactNode,
-} from "react";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
+import type { ElementType, ReactNode } from "react";
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 type RevealProps = {
   children: ReactNode;
   className?: string;
   /** Stagger delay in milliseconds. */
   delay?: number;
-  /** HTML tag to render. */
+  /** HTML tag to render (div, li or p). */
   as?: ElementType;
   /** Animation style: slide-up or gentle scale. */
   variant?: "up" | "scale";
@@ -23,55 +20,62 @@ type RevealProps = {
 };
 
 /**
- * Lightweight scroll-reveal using IntersectionObserver — no animation library,
- * respects prefers-reduced-motion via globals.css.
+ * Framer Motion scroll-reveal — plays once when the element enters the
+ * viewport, gracefully disabled under prefers-reduced-motion.
  */
 export function Reveal({
   children,
   className = "",
   delay = 0,
-  as: Tag = "div",
+  as = "div",
   variant = "up",
   id,
   role,
   ariaLabel,
 }: RevealProps) {
-  const ref = useRef<HTMLElement | null>(null);
+  const reduceMotion = useReducedMotion();
+  const Component = (
+    as === "li" ? motion.li : as === "p" ? motion.p : motion.div
+  ) as typeof motion.div;
 
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
+  const variants: Variants = {
+    hidden:
+      variant === "scale"
+        ? { opacity: 0, scale: 0.96, y: 14 }
+        : { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: { duration: 0.9, delay: delay / 1000, ease: EASE },
+    },
+  };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        }
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+  if (reduceMotion) {
+    return (
+      <Component
+        id={id}
+        role={role}
+        aria-label={ariaLabel}
+        className={className}
+      >
+        {children}
+      </Component>
     );
-
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
-  const style: CSSProperties = delay
-    ? { transitionDelay: `${delay}ms` }
-    : {};
+  }
 
   return (
-    <Tag
-      ref={ref}
+    <Component
       id={id}
       role={role}
       aria-label={ariaLabel}
-      className={`${variant === "scale" ? "reveal-scale" : "reveal"} ${className}`}
-      style={style}
+      className={className}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "0px 0px -8% 0px" }}
+      variants={variants}
     >
       {children}
-    </Tag>
+    </Component>
   );
 }

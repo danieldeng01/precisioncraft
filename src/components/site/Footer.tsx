@@ -2,6 +2,7 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { navLinks, productLinks, services, site } from "@/lib/site";
 import { Logo } from "@/components/site/Logo";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
+import { MapEmbed } from "@/components/site/MapEmbed";
 
 const socialIcons: Record<string, React.ReactNode> = {
   Facebook: (
@@ -204,14 +205,7 @@ export function Footer() {
 
         {/* ── Map ─────────────────────────────────────────────── */}
         <div className="overflow-hidden rounded-3xl border border-white/10">
-          <iframe
-            title="Map — Precision Craft Interiors, Uganda Road, Eldoret, Kenya"
-            src="https://www.google.com/maps?q=Uganda%20Road%2C%20Eldoret%2C%20Kenya&z=14&output=embed"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            className="h-64 w-full grayscale-[35%] contrast-[1.05]"
-            allowFullScreen
-          />
+          <MapEmbed />
         </div>
 
         {/* ── Legal bar ───────────────────────────────────────── */}

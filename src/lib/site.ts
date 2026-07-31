@@ -12,7 +12,15 @@ export const site = {
   emailQuotes: "quotes@precisioncraft.co.ke",
   phone: "+254 743 717 230",
   phoneHref: "tel:+254743717230",
-  whatsapp: "https://wa.me/254743717230",
+  whatsappNumber: "254743717230",
+  whatsappText:
+    "Hello Precision Craft! I'd like to discuss an interior project with you.",
+  whatsapp:
+    "https://web.whatsapp.com/send?phone=254743717230&text=Hello%20Precision%20Craft%21%20I%27d%20like%20to%20discuss%20an%20interior%20project%20with%20you.",
+  whatsappWeb:
+    "https://web.whatsapp.com/send?phone=254743717230&text=Hello%20Precision%20Craft%21%20I%27d%20like%20to%20discuss%20an%20interior%20project%20with%20you.",
+  whatsappApp:
+    "whatsapp://send?phone=254743717230&text=Hello%20Precision%20Craft%21%20I%27d%20like%20to%20discuss%20an%20interior%20project%20with%20you.",
   founder: {
     name: "Udo Wegner",
     role: "Founder & Managing Director",
