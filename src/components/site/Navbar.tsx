@@ -233,10 +233,10 @@ export function Navbar() {
         </button>
       </div>
 
-      {/* ── Mobile menu overlay ──────────────────────────────── */}
+            {/* ── Mobile menu overlay ──────────────────────────────── */}
       <div
         className={cn(
-          "fixed inset-0 z-[60] flex flex-col bg-primary-900 transition-all duration-500 lg:hidden",
+          "fixed left-0 top-0 z-[100] flex h-dvh w-screen flex-col overflow-hidden bg-primary-900 transition-opacity duration-300 lg:hidden",
           menuOpen
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0",
@@ -246,7 +246,8 @@ export function Navbar() {
         aria-label="Navigation menu"
       >
         <div className="grid-texture pointer-events-none absolute inset-0 opacity-60" />
-        <div className="relative flex h-20 items-center justify-between px-5">
+
+        <div className="relative flex h-20 shrink-0 items-center justify-between px-5">
           <Logo tone="light" />
           <button
             type="button"
@@ -257,6 +258,100 @@ export function Navbar() {
             <X className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
+
+        <nav
+          aria-label="Mobile"
+          className="relative flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto px-6 pb-10 pt-4"
+        >
+          {navLinks.slice(0, 3).map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className="rounded-2xl px-4 py-3.5 font-display text-2xl font-medium text-white/90 transition-colors hover:bg-white/5 hover:text-gold"
+            >
+              {link.label}
+            </a>
+          ))}
+
+          <div>
+            <button
+              type="button"
+              onClick={() => setMobileProductsOpen((v) => !v)}
+              aria-expanded={mobileProductsOpen}
+              className="flex w-full items-center justify-between rounded-2xl px-4 py-3.5 font-display text-2xl font-medium text-white/90 transition-colors hover:bg-white/5 hover:text-gold"
+            >
+              Products
+              <ChevronDown
+                className={cn(
+                  "h-5 w-5 transition-transform duration-300",
+                  mobileProductsOpen && "rotate-180",
+                )}
+                aria-hidden="true"
+              />
+            </button>
+
+            <div
+              className={cn(
+                "grid overflow-hidden transition-all duration-300",
+                mobileProductsOpen
+                  ? "grid-rows-[1fr] opacity-100"
+                  : "grid-rows-[0fr] opacity-0",
+              )}
+            >
+              <div className="min-h-0">
+                {productLinks.map((product) => (
+                  <a
+                    key={product.label}
+                    href={product.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="block rounded-xl px-8 py-2.5 text-base text-white/70 transition-colors hover:text-gold"
+                  >
+                    {product.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {afterProducts.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className="rounded-2xl px-4 py-3.5 font-display text-2xl font-medium text-white/90 transition-colors hover:bg-white/5 hover:text-gold"
+            >
+              {link.label}
+            </a>
+          ))}
+
+          <div className="mt-auto flex shrink-0 flex-col gap-3 pt-8">
+            <a
+              href="#contact"
+              onClick={() => setMenuOpen(false)}
+              className={buttonClass("gold", "lg", "w-full")}
+            >
+              Request a Free Quote
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </a>
+
+            <div className="flex flex-col gap-3 rounded-2xl bg-white/5 px-4 py-3 text-sm text-white/80 sm:flex-row sm:items-center sm:justify-between">
+              <span className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-gold" aria-hidden="true" />
+                Mon–Fri 8:00–17:30
+              </span>
+
+              <a
+                href={site.phoneHref}
+                className="flex items-center gap-2 font-semibold text-white"
+              >
+                <Phone className="h-4 w-4 text-gold" aria-hidden="true" />
+                {site.phone}
+              </a>
+            </div>
+          </div>
+        </nav>
+      </div>
 
         <nav
           aria-label="Mobile"
