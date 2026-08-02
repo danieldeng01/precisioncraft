@@ -1,13 +1,35 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
-import { testimonials } from "@/lib/site";
-import { SectionHeader } from "@/components/ui/SectionHeader";
+import {
+  ChevronLeft,
+  ChevronRight,
+  CheckCircle2,
+  ShieldCheck,
+} from "lucide-react";
 import { Reveal } from "@/components/anim/Reveal";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { cn } from "@/lib/utils";
 
-const AUTO_ADVANCE_MS = 6500;
+const commitments = [
+  {
+    title: "Precision in Every Detail",
+    quote:
+      "Every project begins with careful measurements, thoughtful planning, and quality materials. We believe exceptional spaces are created through precision—not shortcuts.",
+  },
+  {
+    title: "Professional Installation",
+    quote:
+      "Our team ensures every cabinet, wardrobe, countertop and interior installation is completed with care, accuracy and attention to detail from start to finish.",
+  },
+  {
+    title: "Built for Years to Come",
+    quote:
+      "We focus on durable workmanship, reliable hardware and timeless designs that continue serving families and businesses long after installation.",
+  },
+];
+
+const AUTO_ADVANCE_MS = 7000;
 
 export function Testimonials() {
   const [index, setIndex] = useState(0);
@@ -16,97 +38,86 @@ export function Testimonials() {
 
   const go = useCallback(
     (next: number) =>
-      setIndex((next + testimonials.length) % testimonials.length),
+      setIndex((next + commitments.length) % commitments.length),
     [],
   );
 
   useEffect(() => {
     if (paused) return;
-    timer.current = setInterval(
-      () => setIndex((i) => (i + 1) % testimonials.length),
-      AUTO_ADVANCE_MS,
-    );
+
+    timer.current = setInterval(() => {
+      setIndex((i) => (i + 1) % commitments.length);
+    }, AUTO_ADVANCE_MS);
+
     return () => {
       if (timer.current) clearInterval(timer.current);
     };
   }, [paused]);
 
-  const active = testimonials[index];
+  const active = commitments[index];
 
   return (
     <section
       id="testimonials"
-      aria-label="Client testimonials"
+      aria-label="Our commitment"
       className="relative overflow-hidden bg-mist py-24 sm:py-32"
     >
-      <Quote
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-6 left-1/2 h-64 w-64 -translate-x-1/2 text-primary/[0.05]"
-      />
-
-      <div className="relative mx-auto max-w-4xl px-5 sm:px-8">
+      <div className="relative mx-auto max-w-5xl px-5 sm:px-8">
         <SectionHeader
-          eyebrow="Client Voices"
-          title="Trusted from family homes to five-star hospitality"
+          eyebrow="Our Commitment"
+          title="Built on craftsmanship, quality and trust"
+          description="As Wegner Precision Craft launches its next chapter, our commitment remains simple: deliver exceptional workmanship and outstanding customer service on every project."
         />
 
-        <Reveal className="mt-14">
+        <Reveal className="mt-16">
           <div
-            className="relative rounded-[2rem] border border-line bg-white p-8 shadow-soft sm:p-12"
+            className="rounded-[2rem] border border-line bg-white p-8 shadow-soft sm:p-12"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
           >
-            <div
-              className="flex justify-center gap-1.5"
-              aria-label="Five star rating"
-            >
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className="h-5 w-5 fill-gold text-gold"
-                  aria-hidden="true"
-                />
-              ))}
+            <div className="flex justify-center">
+              <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white shadow-card">
+                <ShieldCheck className="h-8 w-8" />
+              </span>
             </div>
 
-            {/* Slide */}
             <figure key={index} className="hero-enter mt-8 text-center">
-              <blockquote className="mx-auto max-w-2xl font-display text-lg font-medium leading-relaxed text-ink sm:text-2xl">
-                “{active.quote}”
+              <h3 className="font-display text-2xl font-semibold text-ink">
+                {active.title}
+              </h3>
+
+              <blockquote className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-ink-soft sm:text-xl">
+                {active.quote}
               </blockquote>
-              <figcaption className="mt-8">
-                <p className="font-display text-base font-semibold text-ink">
-                  {active.name}
-                </p>
-                <p className="mt-1 text-sm text-ink-soft">{active.role}</p>
+
+              <figcaption className="mt-8 flex items-center justify-center gap-2 text-primary">
+                <CheckCircle2 className="h-5 w-5 text-gold" />
+                <span className="font-semibold">
+                  Wegner Precision Craft
+                </span>
               </figcaption>
             </figure>
 
-            {/* Controls */}
             <div className="mt-10 flex items-center justify-center gap-6">
               <button
                 type="button"
                 onClick={() => go(index - 1)}
-                aria-label="Previous testimonial"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white"
+                aria-label="Previous"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-line transition-all hover:border-primary hover:bg-primary hover:text-white"
               >
-                <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+                <ChevronLeft className="h-5 w-5" />
               </button>
 
-              <div className="flex items-center gap-2.5" role="tablist" aria-label="Choose testimonial">
-                {testimonials.map((t, i) => (
+              <div className="flex gap-2">
+                {commitments.map((_, i) => (
                   <button
-                    key={t.name}
-                    type="button"
-                    role="tab"
-                    aria-selected={i === index}
-                    aria-label={`Testimonial ${i + 1} from ${t.name}`}
+                    key={i}
                     onClick={() => go(i)}
                     className={cn(
-                      "h-2 rounded-full transition-all duration-400",
+                      "h-2 rounded-full transition-all duration-300",
                       i === index
                         ? "w-8 bg-gold"
-                        : "w-2 bg-ink/15 hover:bg-primary/40",
+                        : "w-2 bg-primary/20 hover:bg-primary/50",
                     )}
                   />
                 ))}
@@ -115,10 +126,10 @@ export function Testimonials() {
               <button
                 type="button"
                 onClick={() => go(index + 1)}
-                aria-label="Next testimonial"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white"
+                aria-label="Next"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-line transition-all hover:border-primary hover:bg-primary hover:text-white"
               >
-                <ChevronRight className="h-5 w-5" aria-hidden="true" />
+                <ChevronRight className="h-5 w-5" />
               </button>
             </div>
           </div>

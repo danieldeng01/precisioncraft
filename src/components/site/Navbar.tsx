@@ -77,13 +77,16 @@ export function Navbar() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-500",
         scrolled
-          ? "bg-white/95 shadow-nav backdrop-blur-xl"
+          ? "bg-white/80 backdrop-blur-2xl border-b border-black/5 shadow-xl"
           : "bg-transparent",
       )}
     >
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8">
+      <div className="mx-auto flex h-24 max-w-7xl items-center justify-between px-6 sm:px-10">
         <a href="#home" aria-label="Precision Craft — home" className="shrink-0">
-          <Logo tone={scrolled ? "dark" : "light"} />
+          <Logo
+               tone={scrolled ? "dark" : "light"}
+               className="w-72 lg:w-80"
+                />
         </a>
 
         {/* ── Desktop navigation ─────────────────────────────── */}
@@ -93,7 +96,7 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               className={cn(
-                "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                "rounded-full px-5 py-2.5 text-[15px] font-medium tracking-wide transition-all duration-300",
                 linkTone,
               )}
             >
@@ -115,7 +118,7 @@ export function Navbar() {
               onClick={() => setProductsOpen((v) => !v)}
               onFocus={openProducts}
               className={cn(
-                "flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[15px] font-medium tracking-wide transition-all duration-300",
                 linkTone,
                 productsOpen && (scrolled ? "text-primary" : "text-gold"),
               )}
@@ -188,7 +191,7 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               className={cn(
-                "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                "rounded-full px-5 py-2.5 text-[15px] font-medium tracking-wide transition-all duration-300",
                 linkTone,
               )}
             >
@@ -197,7 +200,7 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-4 lg:flex">
           <a
             href={site.phoneHref}
             className={cn(
@@ -212,7 +215,7 @@ export function Navbar() {
             href="#contact"
             className={buttonClass(scrolled ? "navy" : "gold", "sm")}
           >
-            Get a Quote
+            Request Consultation
           </a>
         </div>
 
@@ -248,7 +251,10 @@ export function Navbar() {
         <div className="grid-texture pointer-events-none absolute inset-0 opacity-60" />
 
         <div className="relative flex h-20 shrink-0 items-center justify-between px-5">
-          <Logo tone="light" />
+          <Logo
+              tone="light"
+              className="w-64"
+             />
           <button
             type="button"
             onClick={() => setMenuOpen(false)}
@@ -354,7 +360,7 @@ export function Navbar() {
               onClick={() => setMenuOpen(false)}
               className={buttonClass("gold", "lg", "w-full")}
             >
-              Request a Free Quote
+              Book a Free Consultation
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <div className="flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3 text-sm text-white/80">
