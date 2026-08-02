@@ -18,7 +18,7 @@ const stats = [
   { value: "30+", label: "Years of Bench Experience" },
   { value: "150+", label: "Projects Delivered" },
   { value: "40+", label: "Commercial Fit-outs" },
-  { value: "5 Yr", label: "Workmanship Warranty" },
+  { value: "1 Yr", label: "Workmanship Warranty" },
 ];
 
 const container: Variants = {
@@ -49,7 +49,7 @@ export function Hero() {
     <section
       ref={sectionRef}
       id="home"
-      aria-label="Welcome to Precision Craft Interiors Kenya"
+      aria-label="Welcome to Wegner Precision Craft Interiors Kenya"
       className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-primary-900"
     >
       {/* ── Backdrop: intro zoom + gentle scroll parallax ──────── */}
@@ -65,7 +65,7 @@ export function Hero() {
         >
           <Image
             src="/images/hero-kitchen.jpg"
-            alt="Premium bespoke kitchen with matte navy cabinetry, brass hardware and a marble waterfall island, crafted by Precision Craft in Eldoret"
+            alt="Luxury custom kitchen designed and installed by Wegner Precision Craft in Kenya. "
             fill
             priority
             sizes="100vw"
@@ -102,11 +102,11 @@ export function Hero() {
             variants={rise}
             className="mt-7 font-display text-[2.6rem] font-semibold leading-[1.06] tracking-tight text-white sm:text-6xl lg:text-[4.25rem]"
           >
-            Crafting Beautiful
+            Transforming Spaces
             <br />
-            Spaces with{" "}
+            Through{" "}
             <span className="relative inline-block text-gold">
-              Precision
+              Precision Craftsmanship
               <svg
                 viewBox="0 0 220 12"
                 aria-hidden="true"
@@ -128,9 +128,9 @@ export function Hero() {
             variants={rise}
             className="mt-7 max-w-xl text-base leading-relaxed text-white/75 sm:text-lg"
           >
-            We design, manufacture and install premium kitchens, wardrobes,
-            TV units, vanities, office furniture and complete interior solutions for 
-            homeowners, developers, architects, contractors and businesses across Kenya.
+            Wegner Precision Craft designs, manufactures and installs premium kitchens, 
+            wardrobes, commercial interiors and bespoke cabinetry for homeowners, 
+            architects, developers and businesses across Kenya.
           </motion.p>
 
           <motion.div
@@ -138,11 +138,11 @@ export function Hero() {
             className="mt-10 flex flex-wrap items-center gap-4"
           >
             <a href="#contact" className={buttonClass("gold", "lg")}>
-              Request a Free Quote
+              Request a Free Consultation
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <a href="#portfolio" className={buttonClass("ghostLight", "lg")}>
-              Explore Our Work
+              View Our Projects
             </a>
           </motion.div>
 
@@ -151,8 +151,10 @@ export function Hero() {
             className="mt-8 flex items-center gap-2 text-sm text-white/60"
           >
             <Award className="h-4 w-4 text-gold" aria-hidden="true" />
-            Rated 5.0 by our first clients — from family homes to hospitality
-            suites.
+            < Award />
+            Designed with precision.
+            Built with quality.
+            Installed with care.
           </motion.p>
         </div>
       </motion.div>
@@ -204,7 +206,7 @@ export function Hero() {
       {/* Scroll cue */}
       <motion.a
         href="#about"
-        aria-label="Scroll to learn about Precision Craft"
+        aria-label="Scroll to learn about Wegner Precision Craft"
         className="absolute bottom-40 left-1/2 hidden -translate-x-1/2 text-white/60 transition-colors hover:text-gold lg:block"
         initial={reduceMotion ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}

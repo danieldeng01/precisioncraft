@@ -1,26 +1,26 @@
 /**
- * Single source of truth for Precision Craft Interiors Kenya Ltd.
+ * Single source of truth for Wegner Precision Craft Interiors Kenya Ltd.
  */
 export const site = {
-  name: "Precision Craft",
-  legalName: "Precision Craft Interiors Kenya Ltd",
-  tagline: "Crafting Beautiful Spaces with Precision",
+  name: "Wegner Precision Craft Interiors Kenya Ltd",
+  legalName: "Wegner Precision Craft Interiors Kenya Ltd",
+  tagline: "Creating Exceptional Spaces Through Precision Craftsmanship",
   description:
-    "Premium custom cabinetry and interior solutions in Eldoret, Kenya. Bespoke kitchens, wardrobes, media walls, vanities and commercial interiors — designed, built and installed with precision for homes, hotels, offices and institutions across Uasin Gishu and beyond.",
-  url: "https://precisioncraft.co.ke",
-  email: "hello@precisioncraft.co.ke",
-  emailQuotes: "quotes@precisioncraft.co.ke",
+    "Premium custom cabinetry, luxury kitchens, wardrobes, commercial fit-outs and bespoke interior solutions designed, manufactured and professionally installed across Kenya.",
+  url: "https://wegnerprecisioncraft.co.ke",
+  email: "hello@wegnerprecisioncraft.co.ke",
+  emailQuotes: "quotes@wegnerprecisioncraft.co.ke",
   phone: "+254 743 717 230",
   phoneHref: "tel:+254743717230",
   whatsappNumber: "254743717230",
   whatsappText:
-    "Hello Precision Craft! I'd like to discuss an interior project with you.",
+    "Hello Wegner Precision Craft! I'd like to discuss an interior project with you.",
   whatsapp:
-    "https://web.whatsapp.com/send?phone=254743717230&text=Hello%20Precision%20Craft%21%20I%27d%20like%20to%20discuss%20an%20interior%20project%20with%20you.",
+    "https://web.whatsapp.com/send?phone=254743717230&text=Hello%20Wegner%20Precision%20Craft%21%20I%27d%20like%20to%20discuss%20an%20interior%20project%20with%20you.",
   whatsappWeb:
-    "https://web.whatsapp.com/send?phone=254743717230&text=Hello%20Precision%20Craft%21%20I%27d%20like%20to%20discuss%20an%20interior%20project%20with%20you.",
+    "https://web.whatsapp.com/send?phone=254743717230&text=Hello%20Wegner%20Precision%20Craft%21%20I%27d%20like%20to%20discuss%20an%20interior%20project%20with%20you.",
   whatsappApp:
-    "whatsapp://send?phone=254743717230&text=Hello%20Precision%20Craft%21%20I%27d%20like%20to%20discuss%20an%20interior%20project%20with%20you.",
+    "whatsapp://send?phone=254743717230&text=Hello%20Wegner%20Precision%20Craft%21%20I%27d%20like%20to%20discuss%20an%20interior%20project%20with%20you.",
   founder: {
     name: "Udo Wegner",
     role: "Founder & Managing Director",
@@ -42,10 +42,10 @@ export const site = {
   serviceArea:
     "Eldoret · Uasin Gishu · Trans Nzoia · Nandi · Elgeyo Marakwet · Kakamega · Nakuru",
   socials: [
-    { label: "Facebook", href: "https://facebook.com/precisioncraftke" },
-    { label: "Instagram", href: "https://instagram.com/precisioncraftke" },
-    { label: "LinkedIn", href: "https://linkedin.com/company/precisioncraftke" },
-    { label: "TikTok", href: "https://tiktok.com/@precisioncraftke" },
+    { label: "Facebook", href: "https://facebook.com/wegnerprecisioncraftke" },
+    { label: "Instagram", href: "https://instagram.com/wegnerprecisioncraftke" },
+    { label: "LinkedIn", href: "https://linkedin.com/company/wegnerprecisioncraftke" },
+    { label: "TikTok", href: "https://tiktok.com/@wegnerprecisioncraftke" },
   ],
 } as const;
 

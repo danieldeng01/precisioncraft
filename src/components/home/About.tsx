@@ -31,14 +31,14 @@ const pillars = [
 
 export function About() {
   return (
-    <section id="about" aria-label="About Precision Craft" className="overflow-hidden bg-white py-24 sm:py-32">
+    <section id="about" aria-label="About Wegner Precision Craft" className="overflow-hidden bg-white py-24 sm:py-32">
       <div className="mx-auto grid max-w-7xl items-center gap-16 px-5 sm:px-8 lg:grid-cols-2 lg:gap-20">
         {/* ── Imagery collage ────────────────────────────────── */}
         <Reveal variant="scale" className="relative">
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] shadow-elevated sm:aspect-[5/5.5]">
             <Image
               src="/images/craft-workshop.jpg"
-              alt="Precision Craft master craftsman measuring a walnut veneer panel in the Eldoret joinery workshop"
+              alt="Wegner Precision Craft master craftsman measuring a walnut veneer panel in the Eldoret joinery workshop"
               fill
               sizes="(max-width: 1024px) 100vw, 46vw"
               className="object-cover"
@@ -73,10 +73,10 @@ export function About() {
             </span>
             <div>
               <p className="font-display text-sm font-semibold text-ink">
-                ±0.5 mm tolerance
+                Premium Finish
               </p>
               <p className="text-xs text-ink-soft">
-                on every panel we cut
+                Built to Last
               </p>
             </div>
           </div>
@@ -86,17 +86,19 @@ export function About() {
         <div>
           <SectionHeader
             align="left"
-            eyebrow="About Precision Craft"
-            title="More than cabinet makers — interior partners for Kenya's finest spaces"
+            eyebrow="About Wegner Precision Craft"
+            title="Crafting Exceptional Spaces Through Precision, Quality and Trust"
           />
 
           <Reveal delay={120}>
             <p className="mt-6 text-base leading-relaxed text-ink-soft sm:text-lg">
-              Founded in 2026 by craftsman Udo Wegner, Precision Craft
-              Interiors Kenya was born from a simple conviction: Eldoret
-              deserves interiors built to uncompromising European standards.
-              From our Uganda Road workshop we serve homeowners, developers,
-              hotels, hospitals, schools, churches and offices — and our
+              Wegner Precision Craft was founded on the principles of precision, 
+              reliability and attention to detail.
+              Inspired by high-quality European craftsmanship and combined with 
+              skilled Kenyan workmanship, we design, manufacture and install custom cabinetry
+              and interior solutions for homeowners, businesses, architects and developers across Kenya.
+              Every project is approached with the same commitment: quality materials, expert craftsmanship, 
+              professional installation and complete customer satisfaction — and our
               promise will never change:{" "}
               <strong className="font-semibold text-ink">
                 measure twice, cut once, and deliver something worth
@@ -132,8 +134,8 @@ export function About() {
                 aria-hidden="true"
               />
               <blockquote className="mt-3 font-display text-lg font-medium leading-relaxed text-ink">
-                “We don&apos;t ship anything we wouldn&apos;t proudly install
-                in our own homes.”
+                “We believe every space deserves craftsmanship that combines beauty, 
+                functionality and lasting quality.”
               </blockquote>
               <figcaption className="mt-3 flex items-center gap-2 text-sm text-ink-soft">
                 <CheckCircle2 className="h-4 w-4 text-primary" aria-hidden="true" />
@@ -144,7 +146,7 @@ export function About() {
 
           <Reveal delay={500} className="mt-10">
             <a href="#portfolio" className={buttonClass("navy", "md")}>
-              See the Standard of Our Work
+              View Our Projects
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
           </Reveal>
