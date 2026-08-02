@@ -102,9 +102,9 @@ export function Hero() {
             variants={rise}
             className="mt-7 font-display text-[2.6rem] font-semibold leading-[1.06] tracking-tight text-white sm:text-6xl lg:text-[4.25rem]"
           >
-            Transforming Spaces
+            Transforming Spaces Through
             <br />
-            Through{" "}
+            {" "}
             <span className="relative inline-block text-gold">
               Precision Craftsmanship
               <svg
