@@ -47,7 +47,7 @@ export function Logo({ tone = "dark" }: { tone?: "dark" | "light" }) {
             tone === "light" ? "text-white" : "text-ink",
           )}
         >
-          Precision<span className="text-gold"> Craft</span>
+          Wegner Precision<span className="text-gold"> Craft</span>
         </span>
         <span
           className={cn(
