@@ -1,8 +1,15 @@
 "use client";
 
-import { useReducedMotion, motion, type Variants } from "framer-motion";
+import { useRef } from "react";
 import Image from "next/image";
-import { ArrowRight, Award, MapPin } from "lucide-react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type Variants,
+} from "framer-motion";
+import { ArrowRight, Award, ChevronDown, MapPin } from "lucide-react";
 import { buttonClass } from "@/components/ui/button";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -16,154 +23,171 @@ const stats = [
 
 const container: Variants = {
   hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.18,
-    },
-  },
+  visible: { transition: { staggerChildren: 0.13, delayChildren: 0.15 } },
 };
 
-const fadeUp: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 22,
-  },
+const rise: Variants = {
+  hidden: { opacity: 0, y: 36 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.85,
-      ease: EASE,
-    },
+    transition: { duration: 1.05, ease: EASE },
   },
 };
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
 
   return (
     <section
+      ref={sectionRef}
       id="home"
-      aria-label="Precision Craft Interiors Kenya hero section"
-      className="relative isolate overflow-hidden bg-primary-950"
+      aria-label="Welcome to Wegner Precision Craft Interiors Kenya"
+      className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-primary-900"
     >
-      <div className="relative min-h-[88svh] lg:min-h-[90svh]">
-        {/* Background image */}
-        <div className="absolute inset-0">
+      {/* ── Backdrop: intro zoom + gentle scroll parallax ──────── */}
+      <motion.div
+        className="absolute -bottom-[12%] -top-[12%] inset-x-0"
+        style={reduceMotion ? {} : { y: backgroundY }}
+      >
+        <motion.div
+          className="relative h-full w-full"
+          initial={reduceMotion ? false : { scale: 1.08 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 2.4, ease: EASE }}
+        >
           <Image
             src="/images/hero-kitchen.jpg"
-            alt="Modern luxury kitchen with custom cabinetry, marble island and premium wood finishes"
+            alt="Luxury custom kitchen designed and installed by Wegner Precision Craft in Kenya. "
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[62%_center] sm:object-[58%_center] lg:object-center"
+            className="object-cover"
           />
-        </div>
+        </motion.div>
+      </motion.div>
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-r from-primary-900/90 via-primary-900/55 to-primary-900/15"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-primary-900/95 to-transparent"
+      />
 
-        {/* Refined readability overlays */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-r from-primary-950/82 via-primary-950/34 to-primary-950/8"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-t from-primary-950/54 via-transparent to-primary-950/18"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-y-0 left-0 w-[58%] bg-[radial-gradient(circle_at_15%_48%,rgba(7,37,64,0.58),transparent_62%)]"
-        />
+      {/* ── Content ─────────────────────────────────────────── */}
+      <motion.div
+        className="relative mx-auto w-full max-w-7xl px-5 pb-40 pt-36 sm:px-8 lg:pb-44"
+        variants={reduceMotion ? undefined : container}
+        initial="hidden"
+        animate="visible"
+      >
+        <div className="max-w-2xl">
+          <motion.p
+            variants={rise}
+            className="inline-flex items-center gap-2.5 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-white/90 backdrop-blur-md"
+          >
+            <MapPin className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
+            Premium Interior Solutions · Eldoret, Kenya
+          </motion.p>
 
-        {/* Hero content */}
-        <div className="relative z-10 mx-auto flex min-h-[88svh] max-w-[94rem] items-center px-5 pb-20 pt-28 sm:px-8 lg:min-h-[90svh] lg:px-10 lg:pb-24 lg:pt-32">
+          <motion.h1
+            variants={rise}
+            className="mt-7 font-display text-[2.6rem] font-semibold leading-[1.06] tracking-tight text-white sm:text-6xl lg:text-[4.25rem]"
+          >
+            Transforming Spaces Through
+            <br />
+            {" "}
+            <span className="relative inline-block text-gold">
+              Precision Craftsmanship
+              <svg
+                viewBox="0 0 220 12"
+                aria-hidden="true"
+                className="absolute -bottom-1 left-0 w-full text-gold/70"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M3 9 Q 110 2 217 8"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </span>
+          </motion.h1>
+
+          <motion.p
+            variants={rise}
+            className="mt-7 max-w-xl text-base leading-relaxed text-white/75 sm:text-lg"
+          >
+            Wegner Precision Craft designs, manufactures and installs premium kitchens, 
+            wardrobes, commercial interiors and bespoke cabinetry for homeowners, 
+            architects, developers and businesses across Kenya.
+          </motion.p>
+
           <motion.div
-            variants={reduceMotion ? undefined : container}
-            initial="hidden"
-            animate="visible"
-            className="max-w-[32.5rem]"
+            variants={rise}
+            className="mt-10 flex flex-wrap items-center gap-4"
           >
-            <motion.p
-              variants={fadeUp}
-              className="inline-flex items-center gap-2.5 rounded-full border border-white/18 bg-white/[0.08] px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-white/82 backdrop-blur-md"
-            >
-              <MapPin className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
-              Eldoret · Premium Interior Solutions
-            </motion.p>
-
-            <motion.h1
-              variants={fadeUp}
-              className="mt-7 max-w-[32rem] font-display text-[2.7rem] font-semibold leading-[1.04] tracking-[-0.045em] text-white sm:text-[3.5rem] lg:text-[4rem] xl:text-[4.25rem]"
-            >
-              Bespoke cabinetry for beautifully crafted interiors.
-            </motion.h1>
-
-            <motion.p
-              variants={fadeUp}
-              className="mt-6 max-w-[30rem] text-[1rem] leading-relaxed text-white/72 sm:text-[1.08rem]"
-            >
-              Custom kitchens, wardrobes and interior fit-outs designed with
-              precision, built for refined Kenyan homes and businesses.
-            </motion.p>
-
-            <motion.div
-              variants={fadeUp}
-              className="mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center"
-            >
-              <a
-                href="#contact"
-                className={buttonClass(
-                  "gold",
-                  "lg",
-                  "w-full sm:w-auto shadow-[0_18px_36px_-18px_rgba(212,175,55,0.7)]",
-                )}
-              >
-                Request Consultation
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </a>
-
-              <a
-                href="#portfolio"
-                className={buttonClass(
-                  "ghostLight",
-                  "lg",
-                  "w-full sm:w-auto bg-white/[0.04]",
-                )}
-              >
-                View Portfolio
-              </a>
-            </motion.div>
-
-            <motion.p
-              variants={fadeUp}
-              className="mt-7 flex items-center gap-2 text-sm text-white/58"
-            >
-              <Award className="h-4 w-4 text-gold" aria-hidden="true" />
-              Built with precision. Installed with care. Trusted across Kenya.
-            </motion.p>
+            <a href="#contact" className={buttonClass("gold", "lg")}>
+              Request a Free Consultation
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </a>
+            <a href="#portfolio" className={buttonClass("ghostLight", "lg")}>
+              View Our Projects
+            </a>
           </motion.div>
-        </div>
-      </div>
 
-      {/* Elegant stats strip */}
-      <div className="relative z-10 -mt-16 pb-10 sm:-mt-14 lg:pb-12">
-        <div className="mx-auto max-w-[94rem] px-5 sm:px-8 lg:px-10">
-          <motion.dl
-            variants={reduceMotion ? undefined : fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-            className="grid overflow-hidden rounded-[1.6rem] border border-white/12 bg-primary-950/72 shadow-[0_24px_60px_-38px_rgba(0,0,0,0.8)] backdrop-blur-2xl sm:grid-cols-2 lg:grid-cols-4"
+          <motion.p
+            variants={rise}
+            className="mt-8 flex items-center gap-2 text-sm text-white/60"
           >
+            <Award className="h-4 w-4 text-gold" aria-hidden="true" />
+            < Award />
+            Designed with precision.
+            Built with quality.
+            Installed with care.
+          </motion.p>
+        </div>
+      </motion.div>
+
+      {/* ── Stats strip ─────────────────────────────────────── */}
+      <motion.div
+        className="relative"
+        variants={
+          reduceMotion
+            ? undefined
+            : {
+                hidden: { opacity: 0, y: 36 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 1.05, delay: 0.65, ease: EASE },
+                },
+              }
+        }
+        initial="hidden"
+        animate="visible"
+      >
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-t-3xl border border-white/10 bg-white/5 backdrop-blur-xl lg:grid-cols-4">
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="border-b border-white/10 px-5 py-4 last:border-b-0 sm:border-r sm:last:border-r-0 lg:border-b-0 lg:px-7 lg:py-5"
+                className="group flex flex-col bg-white/[0.03] px-6 py-6 transition-colors duration-300 hover:bg-white/[0.08] sm:px-8"
               >
-                <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-white/42">
+                <dt className="order-2 mt-1 text-xs font-medium uppercase tracking-wider text-white/55">
                   {stat.label}
                 </dt>
-                <dd className="mt-2 font-display text-2xl font-semibold tracking-tight text-white lg:text-[1.85rem]">
+                <dd className="order-1 font-display text-3xl font-semibold text-white sm:text-4xl">
                   {stat.value.includes("Yr") ? (
                     stat.value
                   ) : (
@@ -175,9 +199,21 @@ export function Hero() {
                 </dd>
               </div>
             ))}
-          </motion.dl>
+          </dl>
         </div>
-      </div>
+      </motion.div>
+
+      {/* Scroll cue */}
+      <motion.a
+        href="#about"
+        aria-label="Scroll to learn about Wegner Precision Craft"
+        className="absolute bottom-40 left-1/2 hidden -translate-x-1/2 text-white/60 transition-colors hover:text-gold lg:block"
+        initial={reduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4, duration: 0.8 }}
+      >
+        <ChevronDown className="h-6 w-6 animate-bounce" aria-hidden="true" />
+      </motion.a>
     </section>
   );
 }
