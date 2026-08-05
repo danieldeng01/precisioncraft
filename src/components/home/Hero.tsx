@@ -50,7 +50,7 @@ export function Hero() {
     ref={sectionRef}
     id="home"
     aria-label="Welcome to Wegner Precision Craft Interiors Kenya"
-    className="relative flex min-h-[92svh] flex-col justify-end overflow-hidden bg-primary-900"
+    className="relative flex min-h-[88svh] flex-col justify-end overflow-hidden bg-primary-900 lg:min-h-[92svh]"
   >
      <motion.div
         className="absolute -bottom-[12%] -top-[12%] inset-x-0"
@@ -87,7 +87,7 @@ export function Hero() {
         <div className="max-w-2xl">
           <motion.p
             variants={rise}
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/85 backdrop-blur-md"
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/85 backdrop-blur-md sm:px-5 sm:py-2 sm:text-[11px]"
           >
             <MapPin className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
             Premium Interior Solutions · Eldoret, Kenya
@@ -95,19 +95,18 @@ export function Hero() {
 
           <motion.h1
             variants={rise}
-            className="mt-6 font-display text-[2.4rem] font-semibold leading-[1.05] tracking-tight text-white sm:text-[3.5rem] lg:text-[3.9rem] xl:text-[4.15rem]"
+            className="mt-6 font-display text-[2.05rem] font-semibold leading-[1.03] tracking-tight text-white sm:text-[3.5rem] lg:text-[3.9rem] xl:text-[4.15rem]"
           >
             Transforming Spaces Through
             <br />
-            {" "}
-            <span className="relative inline-block text-gold">
+            <span className="inline-block text-gold">
               Precision Craftsmanship
             </span>
           </motion.h1>
 
           <motion.p
             variants={rise}
-            className="mt-6 max-w-lg text-[17px] leading-8 text-white/75"
+            className="mt-5 max-w-sm text-[16px] leading-8 text-white/75 sm:mt-6 sm:max-w-lg sm:text-[17px]"
           >
             Premium kitchens, wardrobes and bespoke interiors, expertly designed,
             handcrafted and installed for homes and businesses across Kenya.
@@ -115,7 +114,7 @@ export function Hero() {
 
           <motion.div
             variants={rise}
-            className="mt-8 flex flex-wrap items-center gap-4"
+            className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
           >
             <a href="#contact" className={buttonClass("gold", "lg")}>
               Request a Free Consultation
@@ -128,7 +127,7 @@ export function Hero() {
 
           <motion.p
             variants={rise}
-            className="mt-8 flex items-center gap-2 text-sm text-white/60"
+            className="mt-7 flex items-center gap-2 text-sm text-white/60"
           >
             Trusted by homeowners, architects and developers across Kenya.
           </motion.p>
