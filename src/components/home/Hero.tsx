@@ -46,14 +46,13 @@ export function Hero() {
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
 
   return (
-    <section
-      ref={sectionRef}
-      id="home"
-      aria-label="Welcome to Wegner Precision Craft Interiors Kenya"
-      className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden bg-primary-900"
-    >
-      {/* ── Backdrop: intro zoom + gentle scroll parallax ──────── */}
-      <motion.div
+  <section
+    ref={sectionRef}
+    id="home"
+    aria-label="Welcome to Wegner Precision Craft Interiors Kenya"
+    className="relative flex min-h-[92svh] flex-col justify-end overflow-hidden bg-primary-900"
+  >
+     <motion.div
         className="absolute -bottom-[12%] -top-[12%] inset-x-0"
         style={reduceMotion ? {} : { y: backgroundY }}
       >
@@ -69,22 +68,18 @@ export function Hero() {
             fill
             priority
             sizes="100vw"
-            className="object-cover"
-          />
+            className="object-cover" />
         </motion.div>
       </motion.div>
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-r from-primary-900/90 via-primary-900/55 to-primary-900/15"
-      />
-      <div
+        className="absolute inset-0 bg-gradient-to-r from-primary-900/90 via-primary-900/55 to-primary-900/15" />
+        <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-primary-900/95 to-transparent"
-      />
-
+        className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-primary-900/95 to-transparent" />
       {/* ── Content ─────────────────────────────────────────── */}
       <motion.div
-        className="relative mx-auto w-full max-w-7xl px-5 pb-40 pt-36 sm:px-8 lg:pb-44"
+        className="relative mx-auto w-full max-w-7xl px-5 pb-32 pt-28 sm:px-8 lg:pb-36 lg:pt-32"
         variants={reduceMotion ? undefined : container}
         initial="hidden"
         animate="visible"
@@ -92,7 +87,7 @@ export function Hero() {
         <div className="max-w-2xl">
           <motion.p
             variants={rise}
-            className="inline-flex items-center gap-2.5 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-white/90 backdrop-blur-md"
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/85 backdrop-blur-md"
           >
             <MapPin className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
             Premium Interior Solutions · Eldoret, Kenya
@@ -100,42 +95,27 @@ export function Hero() {
 
           <motion.h1
             variants={rise}
-            className="mt-7 font-display text-[2.6rem] font-semibold leading-[1.06] tracking-tight text-white sm:text-6xl lg:text-[4.25rem]"
+            className="mt-6 font-display text-[2.4rem] font-semibold leading-[1.05] tracking-tight text-white sm:text-[3.5rem] lg:text-[3.9rem] xl:text-[4.15rem]"
           >
             Transforming Spaces Through
             <br />
             {" "}
             <span className="relative inline-block text-gold">
               Precision Craftsmanship
-              <svg
-                viewBox="0 0 220 12"
-                aria-hidden="true"
-                className="absolute -bottom-1 left-0 w-full text-gold/70"
-                preserveAspectRatio="none"
-              >
-                <path
-                  d="M3 9 Q 110 2 217 8"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-              </svg>
             </span>
           </motion.h1>
 
           <motion.p
             variants={rise}
-            className="mt-7 max-w-xl text-base leading-relaxed text-white/75 sm:text-lg"
+            className="mt-6 max-w-lg text-[17px] leading-8 text-white/75"
           >
-            Wegner Precision Craft designs, manufactures and installs premium kitchens, 
-            wardrobes, commercial interiors and bespoke cabinetry for homeowners, 
-            architects, developers and businesses across Kenya.
+            Premium kitchens, wardrobes and bespoke interiors, expertly designed,
+            handcrafted and installed for homes and businesses across Kenya.
           </motion.p>
 
           <motion.div
             variants={rise}
-            className="mt-10 flex flex-wrap items-center gap-4"
+            className="mt-8 flex flex-wrap items-center gap-4"
           >
             <a href="#contact" className={buttonClass("gold", "lg")}>
               Request a Free Consultation
@@ -150,11 +130,7 @@ export function Hero() {
             variants={rise}
             className="mt-8 flex items-center gap-2 text-sm text-white/60"
           >
-            <Award className="h-4 w-4 text-gold" aria-hidden="true" />
-            < Award />
-            Designed with precision.
-            Built with quality.
-            Installed with care.
+            Trusted by homeowners, architects and developers across Kenya.
           </motion.p>
         </div>
       </motion.div>
@@ -187,7 +163,7 @@ export function Hero() {
                 <dt className="order-2 mt-1 text-xs font-medium uppercase tracking-wider text-white/55">
                   {stat.label}
                 </dt>
-                <dd className="order-1 font-display text-3xl font-semibold text-white sm:text-4xl">
+                <dd className="order-1 font-display text-2xl font-semibold text-white sm:text-3xl">
                   {stat.value.includes("Yr") ? (
                     stat.value
                   ) : (
